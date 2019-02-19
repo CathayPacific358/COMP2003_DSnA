@@ -25,6 +25,6 @@ void reverseR(int length, char *str){
         str[0] = str[length - 1];
         str[length - 1] = temp;
         // Recursion
-        reverseR(length - 2, str + 1);
+        reverseR(length - 2, str + 1);// To move the whole string so that to cut the beginning one and the ending one
     }
 }
