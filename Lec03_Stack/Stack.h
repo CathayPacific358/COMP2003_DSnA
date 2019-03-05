@@ -1,5 +1,7 @@
+#include <stdio.h>
+
 typedef struct {
-    double* value;
+    double *values;
     int top;
     int maxTop;
 } Stack;
@@ -13,7 +15,7 @@ bool IsEmpty(Stack *stack);
 
 /* Check if the stack is full
  * Returns true if the stack is empty and false otherwise*/
-bool IsFull(Stack * stack);
+bool IsFull(Stack *stack);
 
 /* Passes the value of the top element to x
  * Returns true if the operation is successful and false otherwise*/
