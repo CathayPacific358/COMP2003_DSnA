@@ -13,7 +13,8 @@ int height(Node *root){
 }
 
 int updateHeight(Node **proot){
-    return (height((*proot)->left) > height((*proot)->right)) ? (height((*proot)->left) + 1) : (height((*proot)->right) + 1);
+    //Pick the bigger one
+    return (height((*proot)->left) > height((*proot)->right)) ? ((*proot)->height = height((*proot)->left) + 1) : ((*proot)->height = height((*proot)->right) + 1);
 }
 
 void rightRotate(Node **proot){
@@ -21,6 +22,7 @@ void rightRotate(Node **proot){
     Node *k1 = k2->left;
     Node *y = k1->right;
 
+    //Rotate
     *proot = k1;
     k1->right = k2;
     k2->left = y;
@@ -33,6 +35,7 @@ void leftRotate(Node **proot){
     Node *k1 = k2->right;
     Node *y = k1->left;
 
+    //Rotate
     k1->left = *proot;
     (*proot)->right = y;
     updateHeight(&k2);
@@ -46,21 +49,32 @@ int checkBalance(Node *root){
     return height(root->left) - height(root->right);
 }
 
-int balance(Node **proot, int x){
-    if(checkBalance(*proot) <= 1 && checkBalance(*proot) >= -1){
-        return 0;
-    }
-    //The LL case
-    else if(checkBalance(*proot) > 1 && (*proot)->left->key > x){
-        return 1;
-    }
-}
-
 void rebalance(Node **proot){
-
+    if(checkBalance(*proot) > 1){
+        //The LL case
+        if((*proot)->left != NULL){
+            rightRotate(proot);
+        }
+            //The LR case
+        else{
+            leftRotate(&(*proot)->left);
+            rightRotate(proot);
+        }
+    }else if(checkBalance(*proot) < -1){
+        //The RR case
+        if((*proot)->right != NULL){
+            leftRotate(proot);
+        }
+            //The RL case
+        else{
+            rightRotate(&(*proot)->right);
+            leftRotate(proot);
+        }
+    }
 }
 
 Node* insertNode(Node **proot, int x){
+    Node *newNode;
 	// if the value already exists, insertion abort
 	if(findNode(*proot, x) != NULL){
 		return NULL;
@@ -72,15 +86,16 @@ Node* insertNode(Node **proot, int x){
         (*proot)->key = x;
         (*proot)->left = NULL;
         (*proot)->right = NULL;
-        (*proot)->height = 1;
+        (*proot)->height = 0;
         return *proot;
     }else if(x < (*proot)->key){
-        (*proot)->left = insertNode(&((*proot)->left), x);
+        newNode = insertNode(&((*proot)->left), x);
 	}else{
-        (*proot)->right = insertNode(&((*proot)->right), x);
+        newNode = insertNode(&((*proot)->right), x);
 	}
-    updateHeight(*proot);
-	return *proot;
+    updateHeight(proot);
+	rebalance(proot);
+	return newNode;
 }
 
 Node* deleteNode(Node **proot, int x){

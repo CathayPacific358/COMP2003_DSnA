@@ -3,7 +3,7 @@
 #include "AVL.h"
 
 
-void main() 
+int main()
 {
   Node * root = NULL;    
   
