@@ -25,7 +25,7 @@ void updateHeight(Node **proot) {
     }
 }
 
-Node* rightRotate(Node *root){
+void rightRotate(Node *root){
     Node *newHead = root->left;
     //Duplicate node
     Node *oldHead;
