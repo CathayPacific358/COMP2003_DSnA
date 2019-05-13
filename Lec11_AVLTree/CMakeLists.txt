@@ -3,4 +3,4 @@ project(DS_AVL)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(DS_AVL main.cpp AVL.cpp AVL.h printTree.cpp)
+add_executable(DS_AVL main.cpp AVL.h AVL.cpp printTree.cpp)
